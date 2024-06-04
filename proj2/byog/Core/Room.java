@@ -32,7 +32,9 @@ public class Room {
     }
 
     public Position centerPosition() {
-        return new Position(bottomLeft.getX() + ((int) (width / 2)), bottomLeft.getY() + ((int) (height / 2)));
+        int x = bottomLeft.getX() + ((int) (width / 2));
+        int y = bottomLeft.getY() + ((int) (height / 2));
+        return new Position(x, y);
     }
 
 }
