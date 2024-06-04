@@ -10,6 +10,8 @@ public class World {
     private TETile[][] world;
     private int width;
     private int height;
+    private final int BOUND = 10;
+    private final int MINNUMBER = 12;
 
     public World(int w, int h) {
         width = w;
@@ -23,33 +25,33 @@ public class World {
     }
 
     public void addRoom(Room r) {
-        int x = r.BottomLeft.x;
-        int y = r.BottomLeft.y;
-        int w = r.width;
-        int h = r.height;
+        int x = r.getBottomLeft().getX();
+        int y = r.getBottomLeft().getY();
+        int w = r.getWidth();
+        int h = r.getHeight();
         for (int i = 0; i < h; i++) {
             world[x][y + i] = Tileset.WALL;
-            world[x + w - 1] [y + i] = Tileset.WALL;
+            world[x + w - 1][y + i] = Tileset.WALL;
         }
 
         for (int i = 0; i < w; i++) {
             world[x + i][y] = Tileset.WALL;
-            world[x + i] [y + h - 1] = Tileset.WALL;
+            world[x + i][y + h - 1] = Tileset.WALL;
         }
 
         for (int i = 0; i < w - 2; i++) {
             for (int j = 0; j < h - 2; j++) {
-                world[x + 1 + i] [y + 1 + j] = Tileset.FLOOR;
+                world[x + 1 + i][y + 1 + j] = Tileset.FLOOR;
             }
         }
     }
 
     public void addConnection(Position p1, Position p2, Random r) {
         boolean isVertcal = r.nextBoolean();
-        int xMin = Math.min(p1.x, p2.x);
-        int xMax = Math.max(p1.x, p2.x);
-        int yMin = Math.min(p1.y, p2.y);
-        int yMax = Math.max(p1.y, p2.y);
+        int xMin = Math.min(p1.getX(), p2.getX());
+        int xMax = Math.max(p1.getY(), p2.getX());
+        int yMin = Math.min(p1.getY(), p2.getY());
+        int yMax = Math.max(p1.getY(), p2.getY());
         if (isVertcal) {
             for (int y = yMin; y <= yMax; y++) {
                 world[xMin][y] = Tileset.FLOOR;
@@ -67,40 +69,40 @@ public class World {
         }
     }
 
-    public TETile[][] Generate(long seed) {
-        ArrayDeque<Room> ArrayRoom = new ArrayDeque<>();
+    public TETile[][] generate(long seed) {
+        ArrayDeque<Room> arrayRoom = new ArrayDeque<>();
         Random r = new Random(seed);
-        int numRoom = 12 + r.nextInt(8);
+        int numRoom = MINNUMBER + r.nextInt(8);
         for (int i = 0; i < numRoom; i++) {
             while (true) {
-                int w = r.nextInt(10) + 5;
-                int h = r.nextInt(10) + 4;
+                int w = r.nextInt(BOUND) + 5;
+                int h = r.nextInt(BOUND) + 4;
                 int x = r.nextInt(width - w - 1) + 1;
                 int y = r.nextInt(height - h - 1) + 1;
                 Room newRoom = new Room(new Position(x, y), w, h);
-                if (ArrayRoom.isEmpty()) {
-                    ArrayRoom.addLast(newRoom);
+                if (arrayRoom.isEmpty()) {
+                    arrayRoom.addLast(newRoom);
                     break;
                 } else {
                     boolean flat = false;
-                    for (int j = 0; j < ArrayRoom.size(); j++) {
-                        flat = flat || newRoom.isOverlap(ArrayRoom.get(j));
+                    for (int j = 0; j < arrayRoom.size(); j++) {
+                        flat = flat || newRoom.isOverlap(arrayRoom.get(j));
                     }
                     if (!flat) {
-                        ArrayRoom.addLast(newRoom);
+                        arrayRoom.addLast(newRoom);
                         break;
                     }
                 }
             }
         }
 
-        for (int i = 0; i < ArrayRoom.size(); i++) {
-            addRoom(ArrayRoom.get(i));
+        for (int i = 0; i < arrayRoom.size(); i++) {
+            addRoom(arrayRoom.get(i));
         }
 
-        for (int i = 0; i < ArrayRoom.size() - 1; i++) {
-            Position p1 = ArrayRoom.get(i).CenterPosition();
-            Position p2 = ArrayRoom.get(i + 1).CenterPosition();
+        for (int i = 0; i < arrayRoom.size() - 1; i++) {
+            Position p1 = arrayRoom.get(i).centerPosition();
+            Position p2 = arrayRoom.get(i + 1).centerPosition();
             addConnection(p1, p2, r);
         }
         delete();
@@ -127,7 +129,7 @@ public class World {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (isDelete(i, j)) {
-                    world[i][j]= Tileset.NOTHING;
+                    world[i][j] = Tileset.NOTHING;
                 }
             }
         }
@@ -144,11 +146,11 @@ public class World {
         }
     }
 
-    public static void main( String[] args) {
+    public static void main(String[] args) {
         TERenderer ter = new TERenderer();
-        World w = new World(80, 30);
-        TETile[][] world = w.Generate(18);
-        ter.initialize(80, 30);
+        World w = new World(Game.WIDTH, Game.HEIGHT);
+        TETile[][] world = w.generate(Game.HEIGHT);
+        ter.initialize(Game.WIDTH, Game.HEIGHT);
         ter.renderFrame(world);
     }
 }

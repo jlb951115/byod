@@ -5,6 +5,7 @@ public class ArrayDeque<T> {
     private int nextlast;
     private int size;
     private T[] item;
+    private final int constant = 16;
     public ArrayDeque() {
         this.size = 0;
         this.nextfirst = 0;
@@ -41,21 +42,21 @@ public class ArrayDeque<T> {
         this.nextlast = this.size;
     }
 
-    public void addFirst(T item) {
+    public void addFirst(T x) {
         if (this.size == this.item.length) {
             resize(2 * this.size);
         }
         this.size += 1;
-        this.item[this.nextfirst] = item;
+        this.item[this.nextfirst] = x;
         this.nextfirst = minusone(this.nextfirst);
     }
 
-    public void addLast(T item) {
+    public void addLast(T x) {
         if (this.size == this.item.length) {
             resize(2 * this.size);
         }
         this.size += 1;
-        this.item[this.nextlast] = item;
+        this.item[this.nextlast] = x;
         this.nextlast = plusone(this.nextlast);
     }
 
@@ -89,7 +90,7 @@ public class ArrayDeque<T> {
         T x = this.item[index];
         this.nextfirst = index;
         this.item[this.nextfirst] = null;
-        if (this.item.length >= 16 && this.size <= this.item.length * 0.25) {
+        if (this.item.length >= constant && this.size <= this.item.length * 0.25) {
             resize(this.size * 2);
         }
         return x;
@@ -104,7 +105,7 @@ public class ArrayDeque<T> {
         T x = this.item[index];
         this.nextlast = index;
         this.item[this.nextlast] = null;
-        if (this.item.length >= 16 && this.size <= this.item.length * 0.25) {
+        if (this.item.length >= constant && this.size <= this.item.length * 0.25) {
             resize(this.size * 2);
         }
         return x;
