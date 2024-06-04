@@ -73,8 +73,8 @@ public class World {
         int numRoom = 12 + r.nextInt(8);
         for (int i = 0; i < numRoom; i++) {
             while (true) {
-                int w = r.nextInt(15) + 5;
-                int h = r.nextInt(15) + 4;
+                int w = r.nextInt(10) + 5;
+                int h = r.nextInt(10) + 4;
                 int x = r.nextInt(width - w - 1) + 1;
                 int y = r.nextInt(height - h - 1) + 1;
                 Room newRoom = new Room(new Position(x, y), w, h);
@@ -104,6 +104,7 @@ public class World {
             addConnection(p1, p2, r);
         }
         delete();
+        addPlayer(r);
         return this.world;
     }
 
@@ -128,6 +129,17 @@ public class World {
                 if (isDelete(i, j)) {
                     world[i][j]= Tileset.NOTHING;
                 }
+            }
+        }
+    }
+
+    public void addPlayer(Random r) {
+        while (true) {
+            int x = r.nextInt(width);
+            int y = r.nextInt(height);
+            if (world[x][y] == Tileset.FLOOR) {
+                world[x][y] = Tileset.PLAYER;
+                break;
             }
         }
     }
