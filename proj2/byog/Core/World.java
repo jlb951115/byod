@@ -48,23 +48,27 @@ public class World {
 
     public void addConnection(Position p1, Position p2, Random r) {
         boolean isVertcal = r.nextBoolean();
+        int x1 = p1.getX();
+        int x2 = p2.getX();
+        int y1 = p1.getY();
+        int y2 = p2.getY();
         int xMin = Math.min(p1.getX(), p2.getX());
         int xMax = Math.max(p1.getY(), p2.getX());
         int yMin = Math.min(p1.getY(), p2.getY());
         int yMax = Math.max(p1.getY(), p2.getY());
         if (isVertcal) {
             for (int y = yMin; y <= yMax; y++) {
-                world[xMin][y] = Tileset.FLOOR;
+                world[x1] [y] = Tileset.FLOOR;
             }
             for (int x = xMin; x <= xMax; x++) {
-                world[x][yMax] = Tileset.FLOOR;
+                world[x][y2] = Tileset.FLOOR;
             }
         } else {
             for (int x = xMin; x <= xMax; x++) {
-                world[x][yMax] = Tileset.FLOOR;
+                world[x][y1] = Tileset.FLOOR;
             }
             for (int y = yMin; y <= yMax; y++) {
-                world[xMax][y] = Tileset.FLOOR;
+                world[x2][y] = Tileset.FLOOR;
             }
         }
     }
