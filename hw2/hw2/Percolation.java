@@ -50,7 +50,7 @@ public class Percolation {
                 continue;
             }
             if (isOpen(i, col)) {
-                rowSet.union(i, row);
+                rowSet.union(getIndex(i, col), index);
                 set.union(getIndex(i, col), index);
             }
         }
@@ -61,6 +61,7 @@ public class Percolation {
             }
             if (isOpen(row, i)) {
                 set.union(getIndex(row, i), index);
+                rowSet.union(getIndex(row, i), index);
             }
         }
     }
