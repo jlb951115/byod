@@ -70,7 +70,7 @@ public class Percolation {
         if (row >= n || col >= n) {
             throw new IndexOutOfBoundsException("Out of Bounds");
         }
-        return set.connected(getIndex(row, col), n * n) && isOpen(row, col);
+        return rowSet.connected(getIndex(row, col), n * n) && isOpen(row, col);
     }
 
     public int numberOfOpenSites() {
