@@ -79,4 +79,8 @@ public class Percolation {
     public boolean percolates() {
         return rowSet.connected(n * n, n * n + 1) && count > 0;
     }
+
+    public static void main(String[] args) {
+        System.out.println("finished");
+    }
 }

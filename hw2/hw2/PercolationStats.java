@@ -8,6 +8,9 @@ public class PercolationStats {
     private double[] experiment;
     private static final double CONSTANT = 1.96;
     public PercolationStats(int N, int T, PercolationFactory pf) {
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException("Illegal Argument");
+        }
         this.experiment = new double[T];
         this.T = T;
         for (int i = 0; i < T; i++) {
