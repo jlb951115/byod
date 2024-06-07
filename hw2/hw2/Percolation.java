@@ -14,11 +14,13 @@ public class Percolation {
         }
         n = N;
         array = new int[N][N];
-        rowSet = new WeightedQuickUnionUF(N);
-        set = new WeightedQuickUnionUF(N * N + 1);
+        rowSet = new WeightedQuickUnionUF(N * N + 1);
+        set = new WeightedQuickUnionUF(N * N + 2);
         count = 0;
         for (int i = 0; i < N; i++) {
             set.union(i, N * N);
+            set.union(i + N * (N - 1), N * N + 1);
+            rowSet.union(i, N * N);
         }
     }
 
@@ -75,6 +77,6 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        return rowSet.connected(0, n - 1) && count > 0;
+        return rowSet.connected(n * n, n * n + 1) && count > 0;
     }
 }
