@@ -47,6 +47,7 @@ public class ArrayDeque<T> {
         for (int i = 0; i < size; i++) {
             a[i] = get(i);
         }
+        items = a;
         nextFirst = capacity - 1;
         nextLast = size;
     }
