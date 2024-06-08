@@ -4,6 +4,8 @@ public class ArrayDeque<T> {
     private int nextFirst;
     private int nextLast;
 
+    private static final int CONSTANT = 16;
+
     public ArrayDeque() {
         size = 0;
         nextFirst = 0;
@@ -84,7 +86,7 @@ public class ArrayDeque<T> {
         T x = items[plusone(nextFirst)];
         size -= 1;
         nextFirst = plusone(nextFirst);
-        if (size <= items.length * 0.25) {
+        if (size <= items.length * 0.25 && items.length >= 16) {
             resize(size * 2);
         }
         return x;
@@ -97,9 +99,10 @@ public class ArrayDeque<T> {
         T x = items[minusone(nextLast)];
         size -= 1;
         nextLast = minusone(nextLast);
-        if (size <= items.length * 0.25) {
+        if (size <= items.length * 0.25 && items.length >= 16) {
             resize(size * 2);
         }
         return x;
     }
+
 }
