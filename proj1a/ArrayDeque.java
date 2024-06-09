@@ -1,39 +1,29 @@
 public class ArrayDeque<T> {
-    private T[] items;
     private int size;
     private int nextFirst;
     private int nextLast;
-
-    private static final int CONSTANT = 16;
+    private T[] items;
 
     public ArrayDeque() {
         size = 0;
-        nextFirst = 0;
         nextLast = 1;
+        nextFirst = 0;
         items = (T[]) new Object[8];
     }
 
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    public int size() {
-        return size;
-    }
-
-    private int plusone(int x) {
-        if (x + 1 == items.length) {
+    private int plusOne(int index) {
+        if (index + 1 == items.length) {
             return 0;
         } else {
-            return x + 1;
+            return index + 1;
         }
     }
 
-    private int minusone(int x) {
-        if (x - 1 < 0) {
+    private int minusOne(int index) {
+        if (index - 1 < 0) {
             return items.length - 1;
         } else {
-            return x - 1;
+            return index - 1;
         }
     }
 
@@ -54,55 +44,61 @@ public class ArrayDeque<T> {
         nextLast = size;
     }
 
-    public void printDeque() {
-        for (int i = 0; i < size; i++) {
-            System.out.print(get(i));
-            System.out.print(" ");
-        }
-    }
-
     public void addFirst(T item) {
         if (size == items.length) {
-            resize(size * 2);
+            resize(2 * size);
         }
-        size += 1;
         items[nextFirst] = item;
-        nextFirst = minusone(nextFirst);
+        nextFirst = minusOne(nextFirst);
+        size += 1;
     }
 
     public void addLast(T item) {
         if (size == items.length) {
-            resize(size * 2);
+            resize(2 * size);
         }
-        size += 1;
         items[nextLast] = item;
-        nextLast = plusone(nextLast);
+        nextLast = plusOne(nextFirst);
+        size += 1;
     }
 
     public T removeFirst() {
         if (size == 0) {
             return null;
         }
-        T x = items[plusone(nextFirst)];
+        nextFirst = plusOne(nextFirst);
+        T x = items[nextFirst];
         size -= 1;
-        nextFirst = plusone(nextFirst);
-        if (size <= items.length * 0.25 && items.length >= 16) {
-            resize(size * 2);
+        if (items.length >= 16 && size < items.length * 0.25) {
+            resize(2 * size);
         }
         return x;
     }
-
     public T removeLast() {
         if (size == 0) {
             return null;
         }
-        T x = items[minusone(nextLast)];
+        nextLast = minusOne(nextLast);
+        T x = items[nextLast];
         size -= 1;
-        nextLast = minusone(nextLast);
-        if (size <= items.length * 0.25 && items.length >= 16) {
-            resize(size * 2);
+        if (items.length >= 16 && size < items.length * 0.25) {
+            resize(2 * size);
         }
         return x;
     }
 
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public void printDeque() {
+        for (int i = 0; i < size; i++) {
+            System.out.print(get(i));
+            System.out.print(" ");
+        }
+    }
 }
