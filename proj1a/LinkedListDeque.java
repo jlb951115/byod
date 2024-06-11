@@ -1,27 +1,29 @@
 public class LinkedListDeque<T> {
     private class DoubleNode<T> {
-        private DoubleNode<T> prev;
         private T item;
+        private DoubleNode<T> prev;
         private DoubleNode<T> next;
-
         private DoubleNode(DoubleNode<T> prev, T item, DoubleNode<T> next) {
+            this.item = item;
             this.next = next;
             this.prev = prev;
-            this.item = item;
         }
     }
 
-    private DoubleNode<T> firstSential;
-    private DoubleNode<T> lastSential;
+    private DoubleNode<T> sentFirst;
+
+    private DoubleNode<T> sentBack;
+
     private int size;
 
     public LinkedListDeque() {
+        sentFirst = new DoubleNode<T>(null, null, null);
+        sentBack = new DoubleNode<T>(null, null, null);
         size = 0;
-        firstSential = new DoubleNode<T>(null, null, null);
-        lastSential = new DoubleNode<T>(null, null, null);
-        firstSential.next = lastSential;
-        lastSential.prev = firstSential;
+        sentFirst.next = sentBack;
+        sentBack.prev = sentFirst;
     }
+
     public int size() {
         return size;
     }
@@ -31,24 +33,24 @@ public class LinkedListDeque<T> {
     }
 
     public void addFirst(T item) {
-        firstSential.next = new DoubleNode<T>(firstSential, item, firstSential.next);
-        firstSential.next.next.prev = firstSential.next;
         size += 1;
+        sentFirst.next = new DoubleNode<T>(sentFirst, item, sentFirst.next);
+        sentFirst.next.next.prev = sentFirst.next;
     }
 
     public void addLast(T item) {
-        lastSential.prev = new DoubleNode<T>(lastSential.prev, item, lastSential);
-        lastSential.prev.prev.next = lastSential.prev;
         size += 1;
+        sentBack.prev = new DoubleNode<T>(sentBack.prev, item, sentBack);
+        sentBack.prev.prev.next = sentBack.prev;
     }
 
     public T removeFirst() {
         if (size == 0) {
             return null;
         }
-        T x = firstSential.next.item;
-        firstSential.next = firstSential.next.next;
-        firstSential.next.prev = firstSential;
+        T x = sentFirst.next.item;
+        sentFirst.next = sentFirst.next.next;
+        sentFirst.next.prev = sentFirst;
         size -= 1;
         return x;
     }
@@ -57,47 +59,47 @@ public class LinkedListDeque<T> {
         if (size == 0) {
             return null;
         }
-        T x = lastSential.prev.item;
-        lastSential.prev = lastSential.prev.prev;
-        lastSential.prev.next = lastSential;
+        T x = sentBack.prev.item;
+        sentBack.prev = sentBack.prev.prev;
+        sentBack.prev.next = sentBack;
         size -= 1;
         return x;
-    }
-
-    public void printDeque() {
-        DoubleNode<T> p = firstSential.next;
-        for (int i = 0; i < size; i++) {
-            System.out.print(p.item);
-            System.out.print(" ");
-            p = p.next;
-        }
     }
 
     public T get(int index) {
         if (index >= size) {
             return null;
         }
-        DoubleNode<T> p = firstSential.next;
+        DoubleNode<T> p = sentFirst.next;
         for (int i = 0; i < index; i++) {
             p = p.next;
         }
         return p.item;
     }
 
-    private LinkedListDeque(DoubleNode<T> firstSential, int size, DoubleNode<T> lastSential) {
+    private LinkedListDeque(DoubleNode<T> sentFirst, int size, DoubleNode<T> sentBack) {
         this.size = size;
-        this.firstSential = firstSential;
-        this.lastSential = lastSential;
+        this.sentBack = sentBack;
+        this.sentFirst = sentFirst;
     }
 
     public T getRecursive(int index) {
         if (index >= size) {
             return null;
         } else if (index == 0) {
-            return firstSential.next.item;
+            return sentFirst.next.item;
         } else {
-            return new LinkedListDeque<T>(firstSential.next,
-                    size - 1, lastSential).getRecursive(index - 1);
+            return new LinkedListDeque<T>(sentFirst.next, size - 1,
+                    sentBack).getRecursive(index - 1);
+        }
+    }
+
+    public void printDeque() {
+        DoubleNode<T> p = sentFirst.next;
+        for (int i = 0; i < size; i++) {
+            System.out.print(p.item);
+            System.out.print(" ");
+            p = p.next;
         }
     }
 }
