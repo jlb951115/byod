@@ -100,7 +100,7 @@ public class ArrayDeque<T> {
         if (index >= size) {
             return null;
         }
-        return items[(nextFirst + 1 + index) & items.length];
+        return items[(nextFirst + 1 + index) % items.length];
     }
 
     public void printDeque() {
