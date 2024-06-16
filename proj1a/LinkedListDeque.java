@@ -98,7 +98,8 @@ public class LinkedListDeque<T> {
         } else if (index == 0) {
             return sentFront.next.item;
         } else {
-            return new LinkedListDeque<T>(sentFront.next, size - 1, sentBack).getRecursive(index - 1);
+            return new LinkedListDeque<T>(sentFront.next,
+                    size - 1, sentBack).getRecursive(index - 1);
         }
     }
 }
