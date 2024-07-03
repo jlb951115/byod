@@ -4,6 +4,7 @@ public class ArrayDeque<T> {
     private int nextLast;
     private T[] items;
 
+    private static final int REF = 16;
     private static final int LENGTH = 8;
     private static final double FACTOR = 0.25;
 
@@ -87,7 +88,7 @@ public class ArrayDeque<T> {
         size -= 1;
         nextFirst = plusOne(nextFirst);
         T x = items[nextFirst];
-        if (size < items.length * FACTOR && items.length >= LENGTH) {
+        if (size < items.length * FACTOR && items.length >= REF) {
             resize(2 * size);
         }
         return x;
@@ -100,7 +101,7 @@ public class ArrayDeque<T> {
         size -= 1;
         nextLast = minusOne(nextLast);
         T x = items[nextLast];
-        if (size < items.length * FACTOR && items.length >= LENGTH) {
+        if (size < items.length * FACTOR && items.length >= REF) {
             resize(2 * size);
         }
         return x;
