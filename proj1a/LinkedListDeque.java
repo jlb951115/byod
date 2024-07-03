@@ -96,8 +96,8 @@ public class LinkedListDeque<T> {
         }
         size -= 1;
         T x = sentBack.prev.item;
-        sentFront.prev = sentBack.prev.prev;
-        sentFront.prev.next = sentBack;
+        sentBack.prev = sentBack.prev.prev;
+        sentBack.prev.next = sentBack;
         return x;
     }
 }
