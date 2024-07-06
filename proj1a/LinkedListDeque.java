@@ -103,7 +103,4 @@ public class LinkedListDeque<T> {
         return x;
     }
 
-    public static void main(String[] args) {
-        LinkedListDeque<Integer> LLD = new LinkedListDeque<>();
-    }
 }
