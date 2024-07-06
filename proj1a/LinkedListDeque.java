@@ -78,7 +78,7 @@ public class LinkedListDeque<T> {
     public void addLast(T item) {
         size += 1;
         sentBack.prev = new Node<T>(sentBack.prev, item, sentBack);
-        sentBack.prev.prev.next = sentBack;
+        sentBack.prev.prev.next = sentBack.prev;
     }
 
     public T removeFirst() {
@@ -101,5 +101,9 @@ public class LinkedListDeque<T> {
         sentBack.prev.next = sentBack;
         size -= 1;
         return x;
+    }
+
+    public static void main(String[] args) {
+        LinkedListDeque<Integer> LLD = new LinkedListDeque<>();
     }
 }
